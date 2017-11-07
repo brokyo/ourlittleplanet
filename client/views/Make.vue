@@ -87,9 +87,9 @@ export default {
     toneConfigEffectsList () { return this.$store.state.tone.effectsConfig },
     toneConfigEffectValues () { return this.$store.state.tone.effectValues },
     chorusEffect () { return this.$store.state.tone.effectValues.Chorus },
-    feedbackEffect () { return this.$store.state.tone.effectValues.FeedbackDelay },
     tremoloEffect () { return this.$store.state.tone.effectValues.Tremolo },
     vibratoEffect () { return this.$store.state.tone.effectValues.Vibrato },
+    freeverbEffect () { return this.$store.state.tone.effectValues.Freeverb },
     ...mapGetters([
       'active_scale'
     ])
@@ -157,6 +157,12 @@ export default {
           let toneEffect = new this.$Tone[effect.name]()
           toneEffect.set(this.toneConfigEffectValues[effect.name])
           toneEffect.name = effect.name
+
+          if(effect.oscillator) {
+            console.log('start that shit')
+            toneEffect.start()
+          }
+
           this.tone.effects.push(toneEffect)
         })
 
@@ -190,13 +196,6 @@ export default {
       },
       deep: true
     },
-    feedbackEffect: {
-      handler (newValues) {
-        var effect = this.$_.find(this.tone.effects, {name: 'FeedbackDelay'})
-        effect.set(newValues)
-      },
-      deep: true
-    },
     tremoloEffect: {
       handler (newValues) {
         var effect = this.$_.find(this.tone.effects, {name: 'Tremolo'})
@@ -207,6 +206,13 @@ export default {
     vibratoEffect: {
       handler (newValues) {
         var effect = this.$_.find(this.tone.effects, {name: 'Vibrato'})
+        effect.set(newValues)
+      },
+      deep: true
+    },
+    freeverbEffect: {
+      handler (newValues) {
+        var effect = this.$_.find(this.tone.effects, {name: 'Freeverb'})
         effect.set(newValues)
       },
       deep: true
@@ -230,6 +236,11 @@ export default {
       let toneEffect = new this.$Tone[effect.name]()
       toneEffect.set(this.toneConfigEffectValues[effect.name])
       toneEffect.name = effect.name
+
+      if(toneEffect.oscillator) {
+        toneEffect.start()
+      }
+
       this.tone.effects.push(toneEffect)
     })
 
@@ -259,6 +270,7 @@ export default {
     }
 
     this.tone.effectChainEnd.connect(this.tone.filter)
+
     this.tone.filter.connect(this.$Tone.Master)
 
     // Set Triggers

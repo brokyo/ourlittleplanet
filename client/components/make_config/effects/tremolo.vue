@@ -1,7 +1,8 @@
 <template>
 <main>
   <label>Frequency</label>
-  <input type="range" min="0" max="10000" step="100" :value="effectConfig.frequency" @change="updateVuexEffect($event.target.value, 'frequency', 'Tremolo')">
+  <input type="range" min="0" max="20" step="0.5" :value="effectConfig.frequency" @change="updateVuexEffect($event.target.value, 'frequency', 'Tremolo')">
+  <input type="number" :value="effectConfig.frequency" @change="updateVuexEffect($event.target.value, 'frequency', 'Tremolo')">
   <label>Depth</label>
   <input type="range" min="0" max="1" step="0.1" :value="effectConfig.depth" @change="updateVuexEffect($event.target.value, 'depth', 'Tremolo')">
   <label>Spread</label>

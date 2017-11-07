@@ -22,7 +22,7 @@
       <chorus v-if="effect.name === 'Chorus' && effect.active"></chorus>
       <tremolo v-if="effect.name === 'Tremolo' && effect.active"></tremolo>
       <vibrato v-if="effect.name === 'Vibrato' && effect.active"></vibrato>
-      <feedback-delay v-if="effect.name === 'FeedbackDelay' && effect.active"></feedback-delay>
+      <freeverb v-if="effect.name === 'Freeverb' && effect.active"></freeverb>
     </div>
 
     <hr>
@@ -42,14 +42,14 @@ import tonefilter from './filter_config.vue'
 
 
 import chorus from './effects/chorus.vue'
-import feedbackDelay from './effects/feedbackdelay.vue'
 import tremolo from './effects/tremolo.vue'
 import vibrato from './effects/vibrato.vue'
+import freeverb from './effects/freeverb.vue'
 
 export default {
   name: 'synth-config',
   components: {
-    synth, monosynth, amsynth, fmsynth, duosynth, tonefilter, chorus, feedbackDelay, tremolo, vibrato
+    synth, monosynth, amsynth, fmsynth, duosynth, tonefilter, chorus, tremolo, vibrato, freeverb
   },
   data () {
     return {

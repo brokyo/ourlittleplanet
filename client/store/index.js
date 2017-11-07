@@ -50,8 +50,8 @@ export const state = ({
       rolloff: -12,
       Q: 1
     },
-    effectsConfig: [{name: 'Chorus', active: false}, {name: 'FeedbackDelay', active: false}, {name: 'Tremolo', active: false}, {name: 'Vibrato', active: false}],
-    effectValues: { Chorus: {frequency: 1.5, delayTime: 3.5, depth: 0.7, feedback: 0.1, type: 'sine', spread: 180, wet: 1}, FeedbackDelay: {delayTime: 0.25, feedback: 0.5, wet: 1}, Tremolo: {frequency: 10, type: 'sine', depth: 0.5, spread: 180, wet: 1}, Vibrato: { maxDelay: 0.005, frequency: 5, depth: 0.1, type: 'sine', wet: 1} }
+    effectsConfig: [{name: 'Chorus', active: false, oscillator: false}, {name: 'Tremolo', active: false, oscillator: true}, {name: 'Vibrato', active: false, oscillator: false}, {name: 'Freeverb', active: false, oscillator: false},],
+    effectValues: { Chorus: {frequency: 1.5, delayTime: 3.5, depth: 0.7, feedback: 0.1, type: 'sine', spread: 180, wet: 1}, Tremolo: {frequency: 10, type: 'sine', depth: 0.5, spread: 180, wet: 1}, Vibrato: { maxDelay: 0.005, frequency: 5, depth: 0.1, type: 'sine', wet: 1}, Freeverb: {roomSize: 0.7, dampening: 3000, wet: 1} }
   },
   scale: {
     config: {
