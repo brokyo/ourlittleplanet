@@ -50,7 +50,7 @@ export default {
 	},
   data () {
     return {
-    	activeView: 'meta',
+    	activeView: 'synth',
       showVideo: false,
       showOverlay: false,
       showConfig: true,
@@ -68,8 +68,10 @@ export default {
       },
     	tone: {
     		synth: {},
-    		effects: [{}],
-    		filter: {}
+    		effects: [],
+    		filter: {},
+        effectChainStart: {},
+        effectChainEnd: {}
     	},
       u3c: {
         about: 'Make your own digital music box. It looks confusing (and it is! Welcome to the under construction club! I no longer care about UX!) but honestly you\'ll figure it out. It\'ll be fine. If something is super impossible to use of confusing email me at alexcarusillo@gmail.com.',
@@ -82,6 +84,12 @@ export default {
     toneConfigSynthValues () { return this.$store.state.tone.synthMemberValues },
   	toneConfigFilter () { return this.$store.state.tone.filter },
   	toneConfigFilterValues () { return this.$store.state.tone.filterMemberValues },
+    toneConfigEffectsList () { return this.$store.state.tone.effectsConfig },
+    toneConfigEffectValues () { return this.$store.state.tone.effectValues },
+    chorusEffect () { return this.$store.state.tone.effectValues.Chorus },
+    feedbackEffect () { return this.$store.state.tone.effectValues.FeedbackDelay },
+    tremoloEffect () { return this.$store.state.tone.effectValues.Tremolo },
+    vibratoEffect () { return this.$store.state.tone.effectValues.Vibrato },
     ...mapGetters([
       'active_scale'
     ])
@@ -89,10 +97,10 @@ export default {
   watch: {
   	toneConfigSynthName: {
   		handler () { 
-  			this.tone.synth.disconnect(this.tone.filter)
+  			this.tone.synth.disconnect(this.tone.effectChainStart)
   			this.tone.synth = new this.$Tone.PolySynth(8, this.$Tone[this.toneConfigSynthName])
 		    this.tone.synth.set(this.toneConfigSynthValues)
-		    this.tone.synth.connect(this.tone.filter)
+		    this.tone.synth.connect(this.tone.effectChainStart)
 		    this.tone.synth.triggerAttackRelease(110, 1)
   		}
   	},
@@ -104,7 +112,7 @@ export default {
   	},
     toneConfigFilter: {
       handler () {
-        this.tone.synth.disconnect(this.tone.filter)
+        this.tone.effectChainEnd.disconnect(this.tone.filter)
         this.tone.filter = {}
 
         if(this.toneConfigFilter) {
@@ -113,7 +121,7 @@ export default {
           this.tone.filter = new this.$Tone.Gain()
         }
 
-        this.tone.synth.connect(this.tone.filter)
+        this.tone.effectChainEnd.connect(this.tone.filter)
         this.tone.filter.connect(this.$Tone.Master)
       }
     },
@@ -122,15 +130,127 @@ export default {
         this.tone.filter.set(this.toneConfigFilterValues)
       },
       deep: true
+    },
+    toneConfigEffectsList: {
+      handler () {
+        // Disconnect Effects
+
+        // Disconnect effect chain
+        this.tone.effectChainStart.disconnect(this.tone.effects[0])
+
+        this.$_.forEach(this.tone.effects, (effect, index) => {
+          if (index === 0 && this.tone.effects.length === 1) {
+            effect.disconnect(this.tone.effectChainEnd)
+          } else if (index !== (this.tone.effects.length - 1) ) {
+            effect.disconnect(this.tone.effects[index+1])
+          } else {
+            effect.disconnect(this.tone.effectChainEnd)
+          }
+        })
+
+        // Reset effect object
+        this.tone.effects = []
+
+        // Create and push effects to effect array
+        var activeEffects = this.$_.filter(this.toneConfigEffectsList, {active: true})
+        activeEffects.forEach((effect) => {
+          let toneEffect = new this.$Tone[effect.name]()
+          toneEffect.set(this.toneConfigEffectValues[effect.name])
+          toneEffect.name = effect.name
+          this.tone.effects.push(toneEffect)
+        })
+
+
+        // Connect it all
+        this.$_.forEach(this.tone.effects, (effect, index) => {
+          if ( index === 0 && this.tone.effects.length === 1 ) {
+            this.tone.effectChainStart.connect(effect)
+            effect.connect(this.tone.effectChainEnd)
+          } else if ( index === 0 ) {
+            this.tone.effectChainStart.connect(effect)         
+            effect.connect(this.tone.effects[index+1])   
+          } else if ( index !== (this.tone.effects.length - 1 )) {
+            effect.connect(this.tone.effects[index + 1])
+          } else {
+            effect.connect(this.tone.effectChainEnd)
+          }
+        })
+
+        if ( this.tone.effects.length === 0 ) {
+          this.tone.effectChainStart.connect(this.tone.effectChainEnd)
+        }
+
+      },
+      deep: true
+    },
+    chorusEffect: {
+      handler (newValues) {
+        var effect = this.$_.find(this.tone.effects, {name: 'Chorus'})
+        effect.set(newValues)
+      },
+      deep: true
+    },
+    feedbackEffect: {
+      handler (newValues) {
+        var effect = this.$_.find(this.tone.effects, {name: 'FeedbackDelay'})
+        effect.set(newValues)
+      },
+      deep: true
+    },
+    tremoloEffect: {
+      handler (newValues) {
+        var effect = this.$_.find(this.tone.effects, {name: 'Tremolo'})
+        effect.set(newValues)
+      },
+      deep: true
+    },
+    vibratoEffect: {
+      handler (newValues) {
+        var effect = this.$_.find(this.tone.effects, {name: 'Vibrato'})
+        effect.set(newValues)
+      },
+      deep: true
     }
   },
   mounted: function () {
-    // Create Synth
     this.$Tone.context.close()
     this.$Tone.context = new AudioContext()
 
     this.tone.synth = new this.$Tone.PolySynth(8, this.$Tone[this.toneConfigSynthName])
     this.tone.synth.set(this.toneConfigSynthValues)
+
+    this.tone.effectChainStart = new this.$Tone.Gain()
+    this.tone.synth.connect(this.tone.effectChainStart)
+
+    this.tone.effectChainEnd = new this.$Tone.Gain()
+
+    // Create and push effects to effect array
+    var activeEffects = this.$_.filter(this.toneConfigEffectsList, {active: true})
+    activeEffects.forEach((effect) => {
+      let toneEffect = new this.$Tone[effect.name]()
+      toneEffect.set(this.toneConfigEffectValues[effect.name])
+      toneEffect.name = effect.name
+      this.tone.effects.push(toneEffect)
+    })
+
+    if ( this.tone.effects.length > 0 ) {
+      this.$_.forEach(this.tone.effects, (effect, index) => {
+        if ( index === 0 && this.tone.effects.length === 1 ) {
+          this.tone.effectChainStart.connect(effect)
+          effect.connect(this.tone.effectChainEnd)
+        } else if ( index === 0 ) {
+          this.tone.effectChainStart.connect(effect)         
+          effect.connect(this.tone.effects[index+1])   
+        } else if ( index !== (this.tone.effects.length - 1 )) {
+          console.log(effect, '>', this.tone.effects[index + 1])
+          effect.connect(this.tone.effects[index + 1])
+        } else {
+          effect.connect(this.tone.effectChainEnd)
+        }
+      })      
+    } else {
+      this.tone.effectChainStart.connect(this.tone.effectChainEnd)
+    }
 
     if (this.toneConfigFilter) {
       this.tone.filter = new this.$Tone.Filter(this.toneConfigFilterValues)
@@ -138,13 +258,12 @@ export default {
       this.tone.filter = new this.$Tone.Gain()
     }
 
-    this.tone.synth.connect(this.tone.filter)
+    this.tone.effectChainEnd.connect(this.tone.filter)
     this.tone.filter.connect(this.$Tone.Master)
 
     // Set Triggers
     this.$_.forEach(this.active_scale, (pitch, index) => {
       window.addEventListener('keydown', (e) => {
-
         if (e.key === pitch.keyCode & !e.repeat) {
           this.tone.synth.triggerAttack(this.active_scale[index].noteToPlay)
           this.playing[index] = true

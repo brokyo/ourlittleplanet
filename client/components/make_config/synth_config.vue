@@ -1,5 +1,6 @@
 <template>
 <main>
+  <h2>Synths</h2>
     <section>
 	    <select :value="toneConfig.synth" @change="changeSynth">
           <option value="" disabled selected hidden>Select Synth</option>
@@ -13,10 +14,20 @@
       <duosynth v-if="toneConfig.synth === 'DuoSynth'"></duosynth>
     </section>
 
-    <!-- Filter Config -->
-    <section class="configSection">
-      <tonefilter></tonefilter>
-    </section>
+    <hr>
+    <h2>Effects</h2>
+    <div v-for="effect in effectsConfig">
+      <label>{{effect.name}}</label>
+      <input type="checkbox" :value="effect.name" v-model="effect.active">
+      <chorus v-if="effect.name === 'Chorus' && effect.active"></chorus>
+      <tremolo v-if="effect.name === 'Tremolo' && effect.active"></tremolo>
+      <vibrato v-if="effect.name === 'Vibrato' && effect.active"></vibrato>
+      <feedback-delay v-if="effect.name === 'FeedbackDelay' && effect.active"></feedback-delay>
+    </div>
+
+    <hr>
+    <h2>Filter</h2>
+    <tonefilter></tonefilter>
 </main>
 </template>
 
@@ -28,32 +39,28 @@ import amsynth from './synths/amsynth.vue'
 import fmsynth from './synths/fmsynth.vue'
 import duosynth from './synths/duosynth.vue'
 import tonefilter from './filter_config.vue'
-// import triggers from './triggers.vue'
 
 
-// import autofilter from '../effects/autofilter.vue'
-// import autopanner from '../effects/autopanner.vue'
-// import chorus from '../effects/chorus.vue'
-// import feedbackdelay from '../effects/feedbackdelay.vue'
-// import pitchshift from '../effects/pitchshift.vue'
-// import tremolo from '../effects/tremolo.vue'
-// import vibrato from '../effects/vibrato.vue'
+import chorus from './effects/chorus.vue'
+import feedbackDelay from './effects/feedbackdelay.vue'
+import tremolo from './effects/tremolo.vue'
+import vibrato from './effects/vibrato.vue'
 
 export default {
   name: 'synth-config',
-  props: ['synth', 'config'],
   components: {
-    synth, monosynth, amsynth, fmsynth, duosynth, tonefilter
+    synth, monosynth, amsynth, fmsynth, duosynth, tonefilter, chorus, feedbackDelay, tremolo, vibrato
   },
   data () {
     return {
-      tone: {
-        synth: {},
-        effects: [{}],
-        filter: {}
-      },
       possibleSynths: ['Synth', 'MonoSynth', 'AMSynth', 'FMSynth', 'DuoSynth']
     }
+  },
+  computed: {
+    activeScale () { return _.cloneDeep(this.$store.state.scale) },
+    toneConfig () { return this.$store.state.tone },
+    // TODO: This won't run in strict but like I give a fuckkkkkkkkkk (deal with this eventually, maybe :())
+    effectsConfig () { return this.$store.state.tone.effectsConfig }
   },
   methods: {
     changeSynth: function (event) {
@@ -64,13 +71,6 @@ export default {
 
       this.$store.commit('CHANGE_SYNTH_TYPE', newSynth)
     }
-  },
-  computed: {
-    activeScale () { return _.cloneDeep(this.$store.state.scale) },
-    toneConfig () { return this.$store.state.tone }
-  },
-  mounted: function () {
-
   }
 }
 </script>

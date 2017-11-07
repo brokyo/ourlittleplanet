@@ -40,3 +40,19 @@ export const updateVuexFilter = {
         }
     }
 }
+
+export const updateVuexEffect = {
+    methods: {
+        updateVuexEffect(value, key, effect) {
+            let update = {
+                effect: effect,
+                update: {
+                    [key]: value
+                }
+            }
+
+            this.$store.commit('UPDATE_EFFECT_CONFIG', update)
+
+        }
+    }
+}
