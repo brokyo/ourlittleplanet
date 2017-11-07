@@ -1,7 +1,7 @@
 <template>
 <section class="duoSynthConfig">
 	<div class="groupControls">
-		<div class="title">
+		<div class="voiceTitle">
 			<h4>Group Controls</h4>
 		</div>
 		<div class="controls">
@@ -17,13 +17,13 @@
 		</div>
 	</div>
 	<div class="voice">
-		<div class="title">
-			<h4>Voice 0</h4>
+		<div class="voiceTitle">
+			<h4>Voice 1</h4>
 		</div>
 		<div class="voiceControls">
-			<div class="category">
+			<div class="parentCategory">
 				<div class="title">
-					<h6>Synth</h6>
+					<h4>Synth</h4>
 				</div>
 				<div class="category">
 					<label>Oscillator</label>
@@ -38,9 +38,9 @@
 					<input type="number" :value="config.voice0.detune" @change="updateVuexSynth($event.target.value, 'voice0', 'detune')"></input>
 				</div>
 			</div>
-			<div class="category">
+			<div class="parentCategory">
 				<div class="title">
-					<h6>Envelope</h6>
+					<h4>Envelope</h4>
 				</div>
 				<div class="category">
 					<label>Attack</label>
@@ -65,9 +65,9 @@
 					</select>
 				</div>
 			</div>
-			<div class="category">
+			<div class="parentCategory">
 				<div class="title">
-					<h6>Filter Envelope</h6>
+					<h4>Filter Envelope</h4>
 				</div>
 				<div class="category">
 					<label>Attack</label>
@@ -95,13 +95,13 @@
 		</div>
 	</div>
   <div class="voice">
-    <div class="title">
-      <h4>Voice 1</h4>
+    <div class="voiceTitle">
+      <h4>Voice 2</h4>
     </div>
     <div class="voiceControls">
-      <div class="category">
+      <div class="parentCategory">
         <div class="title">
-          <h6>Synth</h6>
+          <h4>Synth</h4>
         </div>
         <div class="category">
           <label>Oscillator</label>
@@ -116,9 +116,9 @@
           <input type="number" :value="config.voice1.detune" @change="updateVuexSynth($event.target.value, 'voice1', 'detune')"></input>
         </div>
       </div>
-      <div class="category">
+      <div class="parentCategory">
         <div class="title">
-          <h6>Envelope</h6>
+          <h4>Envelope</h4>
         </div>
         <div class="category">
           <label>Attack</label>
@@ -143,9 +143,9 @@
           </select>
         </div>
       </div>
-      <div class="category">
+      <div class="parentCategory">
         <div class="title">
-          <h6>Filter Envelope</h6>
+          <h4>Filter Envelope</h4>
         </div>
         <div class="category">
           <label>Attack</label>
@@ -194,48 +194,71 @@ export default {
 <style lang="scss" scoped>
 
 .duoSynthConfig {
-  display: block;
 
   label {
     display: block;
     font-weight: 900;
   }
-  input[type="range"] {
-    width: 70%;
-    margin-right: 10px;
+
+  .parentCategory {
+    display: flex;
   }
-  input[type="number"] {
-    width: 25%;
-    font-weight: 900;
+
+  .controls {
+    margin: 0px 20px;
+    background-color: white;
+    padding-bottom: 20px;
+
+    input[type="range"] {
+      width: 70%;
+      margin-right: 10px;
+    }
+    input[type="number"] {
+      width: 25%;
+      font-weight: 900;
+    }
+
   }
 
   .title {
-    width: 100%;
+    width: 80px;
     background-color: #E1E1E1;
+    border: 1px solid black;
+    border-right: none;
+
+    h4 {
+      margin: 0;
+      padding: 2px 10px;
+    }
   }
 
   .groupControls {
-    height: 600px;
-    width: 20%;
-    display: block;
-      float: left;
-      flex-wrap: wrap;
+    background-color: white;
   }
 
   .voice {
-    width: 80%;
-    float: left;
+
+  }
+
+  .voiceTitle {
+    background-color: #E1E1E1;
+    border: 1px solid black;
+    margin: 20px 0px;
+    padding: 5px 10px;
+
+    h4 {
+      margin: 0;
+    }
   }
 
   .voiceControls {
     display: flex;
-    height: 100%;
+    justify-content: space-evenly;
 
     .category {
-      padding: 5px 10px;
-      height: 100%;
-      flex-grow: 1;
-      flex: 1;
+      border: 1px solid black;
+      padding: 2px 10px;
+      background-color: white;
     }
   }
 }

@@ -1,10 +1,13 @@
 <template>
 <main>
-  <h3>Scale</h3>
-  <select @change="updateScale">
-    <option v-for="scale in scales" :value="scale.id">{{scale.name}}</option>
-  </select>
-  <div v-if="scaleName">
+  <h2 class="sectionHeader"><span>scale</span></h2>
+  <div>
+    <label>Select Scale</label>
+    <select @change="updateScale">
+      <option v-for="scale in scales" :value="scale.id">{{scale.name}}</option>
+    </select>
+  </div>
+  <div>
     <label>Key:</label>
     <select v-model="key">
       <option v-for="note in scaleConfig.possibleNotes">{{note}}</option>
@@ -101,6 +104,17 @@ main {
 #triggerContainer {
   display: flex;
   justify-content: center;
+  background-color: white;
+  padding: 0px;
+}
 
+div {
+  margin-top: 20px;
+  background-color: white;
+  padding: 10px;
+
+  label {
+    font-weight: 900;
+  }
 }
 </style>

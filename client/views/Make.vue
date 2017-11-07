@@ -4,11 +4,13 @@
     <color-filter-overlay v-if="showOverlay" class="overlay--make" :active="playing"></color-filter-overlay>
 
     <div class="controlButtons">
+      <label>Show (only applies to this page):</label>
       <button @click="showVideo = !showVideo">Video: {{ showVideo }}</button>
       <button @click="showOverlay = !showOverlay">Overlay: {{showOverlay}}</button>
       <button @click="showConfig = !showConfig">Controls: {{showConfig}}</button>
     </div>
 		<nav>
+      <label>Create Controls</label>
       <button @click="activeView = 'meta'">Publish Options</button>
       <button @click="activeView = 'synth'">Synth</button>
       <button @click="activeView = 'scale'">Scale</button>
@@ -22,8 +24,6 @@
     <video-config v-if="activeView === 'video' && showConfig"></video-config>
     <overlay-config v-if="activeView === 'overlay' && showConfig"></overlay-config>
     <mutation-config v-if="activeView === 'mutations' && showConfig"></mutation-config>
-
-  <u3c :config="this.u3c"></u3c>
 	</main>
 </template>
 
@@ -50,7 +50,7 @@ export default {
 	},
   data () {
     return {
-    	activeView: 'synth',
+    	activeView: 'meta',
       showVideo: false,
       showOverlay: false,
       showConfig: true,
@@ -72,11 +72,7 @@ export default {
     		filter: {},
         effectChainStart: {},
         effectChainEnd: {}
-    	},
-      u3c: {
-        about: 'Make your own digital music box. It looks confusing (and it is! Welcome to the under construction club! I no longer care about UX!) but honestly you\'ll figure it out. It\'ll be fine. If something is super impossible to use of confusing email me at alexcarusillo@gmail.com.',
-        db: 'jsradioorchestra'
-      }
+    	}
     }
   },
   computed: {
@@ -101,7 +97,6 @@ export default {
   			this.tone.synth = new this.$Tone.PolySynth(8, this.$Tone[this.toneConfigSynthName])
 		    this.tone.synth.set(this.toneConfigSynthValues)
 		    this.tone.synth.connect(this.tone.effectChainStart)
-		    this.tone.synth.triggerAttackRelease(110, 1)
   		}
   	},
   	toneConfigSynthValues: {
@@ -159,7 +154,6 @@ export default {
           toneEffect.name = effect.name
 
           if(effect.oscillator) {
-            console.log('start that shit')
             toneEffect.start()
           }
 
@@ -297,14 +291,27 @@ export default {
   nav {
     position: relative;
     z-index: 1;
+
+    label {
+      font-size: 12px;
+      font-weight: 900;
+      display: block;
+    }
   }
 
   .controlButtons {
-    position: relative;
-    z-index: 1;
+    position: absolute;
+    right: 0;
+    z-index: 2;
+
+    label {
+      font-size: 12px;
+      font-weight: 900;
+      display: block;
+    }
   }
 
   .overlay--make {
-    position: relative;
+    position: absolute;
   }
 </style>

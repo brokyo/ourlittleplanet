@@ -2,24 +2,22 @@
 <main>
 <background-video></background-video>
 <div class="config">
+  <h2 class="sectionHeader"><span>video</span></h2>
   <div class="configPanel">
-    <h3>Video Cofig</h3>
+    <label>Curated Video</label>
     <select @change="videoSelect">
       <option v-for="video in videoList" :value="video.id">{{video.title}}</option>
     </select>
-  	<div v-for="(value, key) in background" v-if="typeof(value) !== 'object'">
-      <label>{{key}}</label>
-  		<input :value="value" @change="update(value, key, $event.target.value)"></input>
-  	</div>
-  	<div v-else >
-      <div v-for="(subvalue, subkey) in value">
-        <label>{{subkey}}</label>
-    		<input :value="subvalue" @change="update(value, key, $event.target.value, subvalue, subkey)"></input>
-      </div>
-  	</div>
+    <label>Custom YouTube Video (paste part after ?v= in url)</label>
+    <input type="text" :value="background.id" @change="update($event.target.value, 'videoId')">
+    <label>Start Time</label>
+    <input type="text" :value="background.params.start" @change="update($event.target.value, 'params', 'start')">
+    <label>End Time</label>
+    <input type="text" :value="background.params.end" @change="update($event.target.value, 'params', 'end')">
+    <label>Volume</label>
+    <input type="text" :value="background.params.volume" @change="update($event.target.value, 'params', 'volume')">
   </div>
 </div>
-
 
 </main>
 </template>
@@ -55,18 +53,18 @@ export default {
     videoSelect () {
       this.$store.commit('SET_VIDEO_PARAMS', {videoId: event.target.value})
     },
-  	update (storeValue, key, newValue, subvalue, subkey) {
+  	update (value, key, subkey) {
   		let update = {}
 
   		if (subkey !== undefined) {
   			update = {
   				[key]: {
-  					[subkey]: newValue
+  					[subkey]: value
   				}
   			}
   		} else {
   			update = {
-  				[key]: newValue
+  				[key]: value
   			}
   		}
 
@@ -77,23 +75,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-main {
-
-}
-
-h1 {
-  font-size: 200px;
-  color: white;
+.config {
+  position: relative;
 }
 
 .configPanel {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 250px;
+  background-color: white;
   padding: 10px;
-  background: white;
-  border: 1px solid black;
+  width: 250px;
+
+  label {
+    display: block;
+    font-weight: 900;
+  }
+
+  input, select {
+    margin-bottom: 10px;
+  }
 }
 
 </style>

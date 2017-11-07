@@ -1,12 +1,12 @@
 <template>
   <main>
     <section>
-      <button @click="hideControls = !hideControls">Hide</button>
+      <h2 class="sectionHeader"><span>overlay</span></h2>
       <button @click="randomize('shallow')">Randomize</button>
       <button @click="randomize('deep')">Deep Randomize</button>
-      <div v-show="hideControls" v-for="(octave, index) in colorConfig">
-        <div>
-          <h1>{{octave.name}}</h1>
+      <div v-for="(octave, index) in colorConfig">
+        <div class="octaveConfig">
+          <h2>{{octave.name}}</h2>
           <label>Direction</label>
           <select :value="octave.config['flex-direction']" @change="updateGroup(index, 'flex-direction', $event.target.value)">
             <option value="column">Column</option>
@@ -16,7 +16,7 @@
             <option value="flex">Show [display: flex]</option>
             <option value="none">Hide</option>
           </select>
-          <div class="octaveConfig" v-for="band in octave.styles">
+          <div v-for="band in octave.styles">
             <label>Color</label>
             <input type="color" :value="band.color" @change="updateBand(band.id, index, 'color', $event.target.value)"></input>
             <label>Grow</label>
@@ -33,37 +33,15 @@
         </div>
       </div>
     </section>
-
   </main>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 
-if (process.browser) {
-    var Tone = require('tone')
-}
-
-var _ = require('lodash')
-
-
 export default {
   name: 'colorfilter-config',
   props: ['active', 'transitions'],
-  components: {
-
-  },
-  data () {
-    return {
-      hideControls: true,
-
-      tone: {
-        synth: {},
-        filter: {},
-        effects: []
-      }
-    }
-  },
   computed: {
     colorConfig () { return this.$store.state.overlay.colorConfig },
   },
@@ -172,6 +150,13 @@ section {
 .octaveConfig {
   z-index: 1;
   display: block;
+  background-color: white;
+  padding: 2px 10px 10px 10px;
+  margin-top: 20px;
+
+  h2 {
+    margin: 10px 0px 20px 0px;
+  }
 
   label {
     display: inline-block;

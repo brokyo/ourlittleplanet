@@ -1,6 +1,6 @@
 <template>
 <main>
-  <h2>Synths</h2>
+  <h2 class="sectionHeader"><span>synth</span></h2>
     <section>
 	    <select :value="toneConfig.synth" @change="changeSynth">
           <option value="" disabled selected hidden>Select Synth</option>
@@ -15,8 +15,8 @@
     </section>
 
     <hr>
-    <h2>Effects</h2>
-    <div v-for="effect in effectsConfig">
+    <h2 class="sectionHeader"><span>effects</span></h2>
+    <div class="effectConfig" v-for="effect in effectsConfig">
       <label>{{effect.name}}</label>
       <input type="checkbox" :value="effect.name" v-model="effect.active">
       <chorus v-if="effect.name === 'Chorus' && effect.active"></chorus>
@@ -26,7 +26,7 @@
     </div>
 
     <hr>
-    <h2>Filter</h2>
+    <h2 class="sectionHeader"><span>filter</span></h2>
     <tonefilter></tonefilter>
 </main>
 </template>
@@ -79,5 +79,15 @@ export default {
 main {
   position: relative;
   z-index: 1;
+}
+
+.effectConfig {
+    background-color: white;
+    margin-top: 10px;
+    padding: 2px 10px;
+
+    label {
+      font-weight: 900;
+    }
 }
 </style>

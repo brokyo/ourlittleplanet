@@ -1,7 +1,7 @@
 <template>
   <main>
     <h3>Single Play Music Box</h3>
-    <p>If you don't know what these are I suggest not touching them other than turning them on or off. See the Under Construction Club widget for more.</p>
+    <p>If you don't know what these are I suggest not touching them other than turning them on or off. V v much a work in progress. See the Under Construction Club widget for more.</p>
     <p>Interval input sets the interval at which compounding effects are applied (i.e. in 'volumeDown' volume decreases by one every eight seconds)</p>
     <div v-for="(mutation, index) in mutations">
       <h4>{{mutation.type}}</h4>
@@ -17,6 +17,7 @@
     </div>
     <h3>Generative Music Box</h3>
     <p>Eventually this thing will let you set multiple short loops with different synth that will play and evolve (note changes, duration changes, phasing, etc) over time. You'll be able to set the rules here</p>
+    <u3c :config="this.u3c"></u3c>
   </main>
 </template>
 
@@ -29,9 +30,9 @@ export default {
   data () {
     return {
       mutations: [],
-      ucc: {
-        about: "There's a vauge strain of wabisabi in this thing and I like the idea of digital decay. My real goal is to introduce natural performance errors that will force sonic glitching naturally (think dust on a record) but while I work that out this fakes it so I can see how interesting it is. If you know browsers and have an idea how to do this (constantly repainting? Self-calling loops?) let me know",
-        instructions: "If you don't know what you're doing here just leave it off. Generally though you can change the time the corruption begins or turn it on/off. I've got a vague idea how can sync changes with the video which might be cool - it might also make it too much of a theme park ride so I dunno"
+      u3c: {
+        about: "I like the idea of digital decay and this is the first pass at what that might look like. My real goal is to introduce natural performance errors that will force sonic glitching naturally (think dust on a record) but while I work that out this fakes it so I can see how interesting it is. If you know browsers and have an idea how to do this (constantly repainting? Self-calling loops?) let me know!",
+        instructions: "If you don't know what you're doing here just leave it off. Generally though you can change the time the corruption begins or turn it on/off. I've got a vague idea how can sync changes with the video which might be cool - it might also make it too much of a theme park ride so I dunno. Compression makes it really gritty and detune and volume down do exactly what it sounds like they do."
       }
     }
   },

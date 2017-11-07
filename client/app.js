@@ -12,6 +12,8 @@ Vue.mixin(updateVuexSynth)
 Vue.mixin(updateVuexFilter)
 Vue.mixin(updateVuexEffect)
 
+require('../static/globalstyles.scss')
+
 sync(store, router)
 
 const app = new Vue({

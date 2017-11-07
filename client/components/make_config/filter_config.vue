@@ -1,11 +1,12 @@
 <template>
 <main>
   <input type="checkbox" :value="configActive" @change="toggleFilter"></input>
-  <section class="filterConfig" :class="{disabled: !configActive}">
+  <section class="filterConfig" v-if="configActive">
     <div class="title">
       <h4>Filter</h4>
     </div>
     <div class="controls">
+      <label>Filter Type</label>
       <select :value="configValues.type" @change="updateVuexFilter($event.target.value, 'type')">
         <option v-for="type in options.filter.allTypes">{{type}}</option>
       </select>
@@ -47,7 +48,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.disabled {
-  background-color: black
-}
 </style>

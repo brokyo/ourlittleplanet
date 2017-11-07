@@ -39,6 +39,11 @@ export default {
     activeEffects.forEach((effect) => {
       let toneEffect = new this.$Tone[effect.name]()
       toneEffect.set(this.toneConfig.effectValues[effect.name])
+
+      if(effect.oscillator) {
+        toneEffect.start()
+      }
+
       this.effects.push(toneEffect)
     })
 

@@ -1,5 +1,6 @@
 <template>
 <main>
+  <h2 class="sectionHeader"><span>meta</span></h2>
   <div id="setParams">
     <div class="olpInput">
       <label>Title</label>
@@ -19,6 +20,7 @@
     </div>
     <button @click="save()">Publish</button>
   </div>
+  <u3c :config="this.u3c"></u3c>
 </main>
 </template>
 
@@ -29,7 +31,10 @@ export default {
   name: 'demo',
   data () {
     return {
-
+      u3c: {
+        about: 'Make your own digital music box. It looks confusing (and it is! Welcome to the under construction club! I no longer care about UX!) but honestly you\'ll figure it out. It\'ll be fine. If something is super impossible to use of confusing email me at alexcarusillo@gmail.com. If you see this box somewhere it means there\'s somethign that I think needs explanation',
+        db: 'jsradioorchestra'
+      }
     }
   },
   computed: {
@@ -59,18 +64,19 @@ export default {
 <style lang="scss" scoped>
 main {
   position: relative;
-  display: flex;
-  justify-content: center;
 
   #setParams {
     background-color: white;
     width: 300px;
     padding: 5px;
-    margin-top: 80px;
   }
 
   textArea {
     height: 60px;
+  }
+
+  label {
+    font-weight: 900;
   }
 }
 
