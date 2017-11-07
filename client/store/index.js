@@ -233,7 +233,7 @@ export const mutations = {
     context.scale = config.scale
     context.video = config.video
     context.overlay = config.overlay
-    context.courruption = config.corruption
+    context.corruption = config.corruption
   }
 }
 
