@@ -1,11 +1,10 @@
 <template>
     <main id="player">
       <div v-if="!userStart">
-        <pre>Welcome to Our Little Planet. All the info you need is immediately below but click the box in the lower right for more context.</pre>
         <h1 v-if="boxConfig.meta">{{$store.state.meta.title}}</h1>
         <h3>Lower octave: 'Q', 'W', 'E', 'R', 'T'</h3>
         <h3>Upper octave: 'H', 'J', 'K', 'L', ';'</h3>
-        <h4>composition last {{$store.state.meta.length}} seconds</h4>
+        <h4>composition lasts {{$store.state.meta.length}} seconds</h4>
         <br>
         <br>
         <br>
@@ -22,6 +21,7 @@
 <script>
 import { db } from '../plugins/firebase.js'
 import player from '../components/player/player.vue'
+
 
 export default {
   name: 'single',
@@ -54,6 +54,7 @@ export default {
       this.userStart = true
     },
     ended: function () {
+      console.log('parent ended')
       if (document.exitFullscreen) {
         document.exitFullscreen()
       } else if (document.mozCancelFullScreen) {
@@ -68,7 +69,6 @@ export default {
       'boxConfig', 
       db.ref('musicboxes').child(this.$route.query.id),
       cancel => {
-        alert('something broken i dunno')
         console.log(cancel)
       },
       ready => {
@@ -79,5 +79,5 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 </style>

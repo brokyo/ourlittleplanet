@@ -4,7 +4,7 @@
         <h1 v-if="boxConfig.meta">{{$store.state.meta.title}}</h1>
         <h3>Lower octave: 'Q', 'W', 'E', 'R', 'T'</h3>
         <h3>Upper octave: 'H', 'J', 'K', 'L', ';'</h3>
-        <h4>composition last {{$store.state.meta.length}} seconds</h4>
+        <h4>composition lasts {{$store.state.meta.length}} seconds</h4>
         <br>
         <br>
         <br>
@@ -29,7 +29,6 @@ export default {
   },
   data () {
     return {
-        // boxConfig: {},
         userStart: false,
         u3c: {
           about: 'This digital music box was created in our little planet. Read more about it at under-construction.club and make your own at /make.',
@@ -79,5 +78,5 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 </style>

@@ -1,7 +1,7 @@
 <template>
   <main class="video-background">
     <div class="video-foreground">
-      <youtube id="video" :videoId='video.videoId' player-width="100%" player-height="100%" :player-vars='{start: video.params.start, end: video.params.end, autoplay: 1, showinfo: 0, modestbranding:1, playlist: video.videoId, loop: 1, controls: 0}' @ready="ready"></youtube>
+      <youtube id="video" :videoId='video.videoId' player-width="100%" player-height="100%" :player-vars='{start: video.params.start, end: video.params.end, autoplay: 1, disabled: 1, showinfo: 0, modestbranding:1, playlist: video.videoId, loop: 1, controls: 0}' @ready="ready"></youtube>
     </div>
   </main>
 </template>

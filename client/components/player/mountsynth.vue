@@ -109,8 +109,8 @@ export default {
 
       if (effect.type === 'compression' && effect.active) {
         this.$Tone.Transport.scheduleOnce((time) => {
-          var compressor = new Tone.Compressor(effect.members).toMaster()
-          this.filter.disconnect(Tone.Master)
+          var compressor = new this.$Tone.Compressor(effect.members).toMaster()
+          this.filter.disconnect(this.$Tone.Master)
           this.filter.connect(compressor)
         }, effect.start)
       }

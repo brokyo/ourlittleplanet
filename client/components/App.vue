@@ -6,6 +6,6 @@
 
 <style>
 body {
-	font-family: 'sans-serif'	
+	font-family: sans-serif	
 }
 </style>

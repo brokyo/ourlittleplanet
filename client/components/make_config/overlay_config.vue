@@ -63,7 +63,7 @@ export default {
         octave.styles.forEach(function (band) {
           let coinFlip = Math.floor(Math.random() * 2)
 
-          band.grow = Math.floor(Math.random() * 3)
+          band.grow = Math.floor(Math.random() * 3) + 1
 
           if (type === 'deep') {
             band.offsetTop = Math.floor(Math.random() * 40)

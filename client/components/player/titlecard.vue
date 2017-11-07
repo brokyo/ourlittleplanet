@@ -27,16 +27,19 @@
 		right: 0;
 		left: 0;
 		bottom: 0;
-    z-index: 9999;
+	    z-index: 9999;
+	    font-family: sans-serif
 	}
 
 	h1 {
 		font-size: 88px;
 		color: white;
+		margin: 0px 0px 0px 10px
 	}
 
 	h4 {
 		color: white;
+		margin: 0px 0px 0px 15px
 	}
 
 	/*Fade Params*/
