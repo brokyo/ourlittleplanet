@@ -7,9 +7,9 @@
         <h4>composition lasts {{$store.state.meta.length}} seconds</h4>
         <br>
         <br>
-        <br>
         <h4>{{$store.state.meta.intro}}</h4>
         <button @click="start">Start</button>
+        <label id="new"><router-link to="/make">Make A New One</router-link></label>
       </div>
       <div v-if="userStart">
         <player @ended="ended"></player>
@@ -79,4 +79,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#new {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 40px;
+}
 </style>
